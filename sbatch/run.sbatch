@@ -12,6 +12,7 @@ module load gcc/6.3.0
 # Replace with your NetID
 NETID=sak869
 source activate /scratch/${NETID}/nlu/env
+GLUE_DIR=/scratch/${NETID}/nlu
 
 cd /scratch/${NETID}/nlu/code/transformers
 export PYTHONPATH=/scratch/${NETID}/nlu/code/transformers/src:$PYTHONPATH
