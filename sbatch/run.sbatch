@@ -1,3 +1,4 @@
+#!/bin/sh
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16000
 #SBATCH --time=1:00:00
@@ -17,7 +18,7 @@ export PYTHONPATH=/scratch/${NETID}/nlu/code/transformers/src:$PYTHONPATH
 TASK_NAME=BoolQ
 export PYTHONPATH={PWD}/src:$PYTHONPATH
 python ./examples/run_glue.py \
-    --model_type bert \
+    --model_type roberta \
     --model_name_or_path bert-base-uncased \
     --task_name ${TASK_NAME} \
     --do_train \
