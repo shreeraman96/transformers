@@ -211,10 +211,9 @@ def train(args, train_dataset, model, tokenizer):
                 continue
 
             model.train()
-            print("------------------------------debug 3 ---------------------------------------")
+            
             batch = tuple(t.to(args.device) for t in batch)
 
-            print("------------------------------debug 4 ---------------------------------------")
             inputs = {"input_ids": batch[0], "attention_mask": batch[1], "labels": batch[3]}
             if args.model_type != "distilbert":
                 inputs["token_type_ids"] = (
@@ -222,6 +221,7 @@ def train(args, train_dataset, model, tokenizer):
                 )  # XLM, DistilBERT, RoBERTa, and XLM-RoBERTa don't use segment_ids
             outputs = model(**inputs)
             loss = outputs[0]  # model outputs are always tuple in transformers (see doc)
+            print("------------------------------debug 3 ---------------------------------------")
 
             if args.n_gpu > 1:
                 loss = loss.mean()  # mean() to average on multi-gpu parallel training
@@ -235,6 +235,7 @@ def train(args, train_dataset, model, tokenizer):
                 loss.backward()
 
             tr_loss += loss.item()
+            print("------------------------------debug 3 ---------------------------------------")
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
@@ -285,9 +286,12 @@ def train(args, train_dataset, model, tokenizer):
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
             if args.max_steps > 0 and global_step > args.max_steps:
+                print("------------------------------debug 6 ---------------------------------------")
                 epoch_iterator.close()
                 break
+        print("------------------------------debug 5 ---------------------------------------")
         if args.max_steps > 0 and global_step > args.max_steps:
+            print("------------------------------debug 7 ---------------------------------------")
             train_iterator.close()
             break
 
