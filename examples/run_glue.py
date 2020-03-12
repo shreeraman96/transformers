@@ -221,7 +221,7 @@ def train(args, train_dataset, model, tokenizer):
                 )  # XLM, DistilBERT, RoBERTa, and XLM-RoBERTa don't use segment_ids
             outputs = model(**inputs)
             loss = outputs[0]  # model outputs are always tuple in transformers (see doc)
-            print("------------------------------debug 3 ---------------------------------------")
+            
 
             if args.n_gpu > 1:
                 loss = loss.mean()  # mean() to average on multi-gpu parallel training
@@ -235,19 +235,24 @@ def train(args, train_dataset, model, tokenizer):
                 loss.backward()
 
             tr_loss += loss.item()
-            print("------------------------------debug 3 ---------------------------------------")
+            
             if (step + 1) % args.gradient_accumulation_steps == 0:
+                print("------------------------------debug 3 ---------------------------------------")
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
                 else:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 
+                print("------------------------------debug 9 ---------------------------------------")
+
                 optimizer.step()
                 scheduler.step()  # Update learning rate schedule
                 model.zero_grad()
                 global_step += 1
+                print("------------------------------debug 8 ---------------------------------------")
 
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
+                    print("------------------------------debug 9 ---------------------------------------")
                     logs = {}
                     if (
                         args.local_rank == -1 and args.evaluate_during_training
@@ -266,6 +271,7 @@ def train(args, train_dataset, model, tokenizer):
                     for key, value in logs.items():
                         tb_writer.add_scalar(key, value, global_step)
                     print(json.dumps({**logs, **{"step": global_step}}))
+                print("------------------------------debug 10 ---------------------------------------")
 
                 if args.local_rank in [-1, 0] and args.save_steps > 0 and global_step % args.save_steps == 0:
                     # Save model checkpoint
