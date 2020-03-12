@@ -248,7 +248,9 @@ def train(args, train_dataset, model, tokenizer):
                 optimizer.step()
                 scheduler.step()  # Update learning rate schedule
                 model.zero_grad()
+                print("debug 1 global step",global_step)
                 global_step += 1
+                print("debug 2 global step",global_step)
                 print("------------------------------debug 8 ---------------------------------------")
 
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
