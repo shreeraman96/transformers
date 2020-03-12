@@ -1,7 +1,7 @@
-SBATCH --gres=gpu:1
-SBATCH --mem=16000
-SBATCH --time=1:00:00
-SBATCH --job-name="nlu_hw4"
+#SBATCH --gres=gpu:1
+#SBATCH --mem=16000
+#SBATCH --time=1:00:00
+#SBATCH --job-name="nlu_hw4"
 
 module purge
 module load anaconda3/5.3.1
