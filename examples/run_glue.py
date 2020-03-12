@@ -243,11 +243,12 @@ def train(args, train_dataset, model, tokenizer):
                 else:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 
-                print("------------------------------debug 9 ---------------------------------------")
-
                 optimizer.step()
+                print("------------------------------debug 10 ---------------------------------------")
                 scheduler.step()  # Update learning rate schedule
+                print("------------------------------debug 11 ---------------------------------------")
                 model.zero_grad()
+                print("------------------------------debug 12 ---------------------------------------")
                 print("debug 1 global step",global_step)
                 global_step += 1
                 print("debug 2 global step",global_step)
