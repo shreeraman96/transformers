@@ -546,6 +546,7 @@ class BoolQProcessor(DataProcessor):
             guid = "%s-%s" % (set_type, line['idx'])
             text_a = line['passage']
             text_b = line['question']
+            print(line['label'])
             if line['label'] == True:
                 label = "1"
             else:
