@@ -543,7 +543,7 @@ class BoolQProcessor(DataProcessor):
         """Creates examples for the training and dev sets."""
         examples = []
         for line in lines:
-            guid = "%s-%s" % (set_type, line['guid'])
+            guid = "%s-%s" % (set_type, line['idx'])
             text_a = line['passage']
             text_b = line['question']
             label = line['label']
