@@ -11,12 +11,17 @@ module load gcc/6.3.0
 
 # Replace with your NetID
 NETID=sak869
+
 source activate /scratch/${NETID}/nlu/env
-GLUE_DIR=/scratch/${NETID}/nlu
+
+GLUE_DIR=/scratch/${NETID}/nlu/data
 
 cd /scratch/${NETID}/nlu/code/transformers
+
 export PYTHONPATH=/scratch/${NETID}/nlu/code/transformers/src:$PYTHONPATH
+
 TASK_NAME=BoolQ
+
 python ./examples/run_glue.py \
     --model_type roberta \
     --model_name_or_path roberta-base \
