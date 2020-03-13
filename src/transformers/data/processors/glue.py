@@ -80,6 +80,7 @@ def glue_convert_examples_to_features(
 
     features = []
     for (ex_index, example) in enumerate(examples):
+        print(example)
         len_examples = 0
         if is_tf_dataset:
             example = processor.get_example_from_tensor_dict(example)
