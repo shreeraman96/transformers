@@ -546,12 +546,10 @@ class BoolQProcessor(DataProcessor):
             guid = "%s-%s" % (set_type, line['idx'])
             text_a = line['passage']
             text_b = line['question']
-            print(line['label'])
             if line['label'] == True:
                 label = "1"
             else:
                 label = "0"
-            print(guid,text_a,text_b,label)
             examples.append(InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
         return examples
 
