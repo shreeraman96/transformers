@@ -111,7 +111,6 @@ def set_seed(args):
 
 def train(args, train_dataset, model, tokenizer):
     """ Train the model """
-    print("---------------------------------------------------training the model now ---------------------------------------------------")
     if args.local_rank in [-1, 0]:
         tb_writer = SummaryWriter()
 
@@ -206,7 +205,6 @@ def train(args, train_dataset, model, tokenizer):
 
             # Skip past any already trained steps if resuming training
             if steps_trained_in_current_epoch > 0:
-                print("------------------------------debug 2 ---------------------------------------")
                 steps_trained_in_current_epoch -= 1
                 continue
 
@@ -237,25 +235,16 @@ def train(args, train_dataset, model, tokenizer):
             tr_loss += loss.item()
             
             if (step + 1) % args.gradient_accumulation_steps == 0:
-                print("------------------------------debug 3 ---------------------------------------")
                 if args.fp16:
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
                 else:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 
                 optimizer.step()
-                print("------------------------------debug 10 ---------------------------------------")
                 scheduler.step()  # Update learning rate schedule
-                print("------------------------------debug 11 ---------------------------------------")
                 model.zero_grad()
-                print("------------------------------debug 12 ---------------------------------------")
-                print("debug 1 global step",global_step)
                 global_step += 1
-                print("debug 2 global step",global_step)
-                print("------------------------------debug 8 ---------------------------------------")
-
                 if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
-                    print("------------------------------debug 9 ---------------------------------------")
                     logs = {}
                     if (
                         args.local_rank == -1 and args.evaluate_during_training
@@ -274,8 +263,7 @@ def train(args, train_dataset, model, tokenizer):
                     for key, value in logs.items():
                         tb_writer.add_scalar(key, value, global_step)
                     print(json.dumps({**logs, **{"step": global_step}}))
-                print("------------------------------debug 10 ---------------------------------------")
-
+                
                 if args.local_rank in [-1, 0] and args.save_steps > 0 and global_step % args.save_steps == 0:
                     # Save model checkpoint
                     output_dir = os.path.join(args.output_dir, "checkpoint-{}".format(global_step))
@@ -295,12 +283,9 @@ def train(args, train_dataset, model, tokenizer):
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
             if args.max_steps > 0 and global_step > args.max_steps:
-                print("------------------------------debug 6 ---------------------------------------")
                 epoch_iterator.close()
                 break
-        print("------------------------------debug 5 ---------------------------------------")
         if args.max_steps > 0 and global_step > args.max_steps:
-            print("------------------------------debug 7 ---------------------------------------")
             train_iterator.close()
             break
 
